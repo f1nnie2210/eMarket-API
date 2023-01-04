@@ -39,6 +39,7 @@ require('./routes/category.js') (app)
 require('./routes/products.js') (app)
 require('./routes/warehouse.js') (app)
 require('./routes/inventory.js') (app)
+require('./routes/supplier.js') (app)
 
 //connect
 const PORT = process.env.PORT || 3000;
