@@ -1,12 +1,12 @@
 module.exports = app => {
-    const suppler= require('../controllers/supplier.js');
+    const supplier= require('../controllers/supplier.js');
 
     var router = require('express').Router();
 
-    router.get('/', suppler.findAll);
-    router.post('/', suppler.create);
-    router.put('/:id', suppler.update);
-    router.delete('/:id', suppler.delete);
+    router.get('/', supplier.findAll);
+    router.post('/', supplier.create);
+    router.put('/:id', supplier.update);
+    router.delete('/:id', supplier.delete);
 
     app.use('/api/supplier', router);
 };
