@@ -57,10 +57,11 @@ Open `config/db.js` then edit it with your MySQL DB. You will need:
 ## Running the project
 
     $ npm start or yarn start
-    
+
+---
 ## About us
 
-Group 8
+- Group 8
 
 | Name     | MSSV |
 | ---      | ---  |
