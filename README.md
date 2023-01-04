@@ -1,6 +1,6 @@
 # eMarket-API
 
-MySQL, Express, Nodejs, Sequelize
+Simple API for eMarket Final Project using MySQL, Express, Nodejs, Sequelize
 
 ---
 ## Requirements
