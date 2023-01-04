@@ -17,17 +17,17 @@ app.use(express.urlencoded({ extended: true }));
 
 //databese
 const db = require('./models')
-db.sequelize.sync()
-  .then(() => {
-    console.log('Synced db.');
-  })
-  .catch((err) => {
-    console.log('Failed to sync db: '+ err.message);
-  });
+// db.sequelize.sync()
+//   .then(() => {
+//     console.log('Synced db.');
+//   })
+//   .catch((err) => {
+//     console.log('Failed to sync db: '+ err.message);
+//   });
 
-// db.sequelize.sync({ force: true }).then(() => {
-//   console.log('Drop and re-sync db.');
-// });
+db.sequelize.sync({ force: true }).then(() => {
+  console.log('Drop and re-sync db.');
+});
 
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to application'})
@@ -38,6 +38,7 @@ require('./routes/customers.js') (app)
 require('./routes/category.js') (app)
 require('./routes/products.js') (app)
 require('./routes/warehouse.js') (app)
+require('./routes/inventory.js') (app)
 
 //connect
 const PORT = process.env.PORT || 3000;

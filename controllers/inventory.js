@@ -1,20 +1,17 @@
 const db = require('../models');
-const Category = db.category;
+const Inventory = db.inventory;
 const Op = db.Sequelize.Op;
 
 //getAll
 exports.findAll = (req, res) => {
-  const name = req.body.name;
-  var conditions = name ? {name: { [Op.like]: `%${name}%` } } : null;
-
-  Category.findAll({ where: conditions })
+  Inventory.findAll()
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({ 
         message:
-          err.message || 'Failed to find category'
+          err.message || 'Failed to find inventory',
       });
     });
 };
@@ -22,7 +19,7 @@ exports.findAll = (req, res) => {
 //create and save
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.name || !req.body.description) {
+  if (!req.body.quantity || !req.body.sold || !req.body.min_quantity || !req.body.max_quantity) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
@@ -30,20 +27,22 @@ exports.create = (req, res) => {
   }
 
   // Create
-  const category = {
-    name: req.body.name,
-    description: req.body.description
+  const inventory = {
+    quantity: req.body.name,
+    sold: req.body.price,
+    min_quantity: req.body.min_quantity,
+    max_quantity: req.body.max_quantity,
   };
 
   // Save in the database
-  Category.create(category)
+  Inventory.create(inventory)
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the category."
+          err.message || "Some error occurred while creating the inventory."
       });
     });
 };
@@ -52,23 +51,23 @@ exports.create = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
   
-  Category.update(req.body, {
+  Inventory.update(req.body, {
     where: { id: id }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: 'Category update successfully',
+          message: 'Inventory update successfully',
         });
       } else {
         res.send({
-          messsage: `Cannot update category with id = ${id}. Maybe category is not found` 
+          messsage: `Cannot update inventory with id = ${id}. Maybe inventory is not found` 
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: 'Could not update category with id = ' + id 
+        message: 'Could not update inventory with id = ' + id 
       });
     });
 };
@@ -76,23 +75,23 @@ exports.update = (req, res) => {
 //delete
 exports.delete = (req, res) => {
   const id = req.params.id;
-  Category.destroy({
+  Inventory.destroy({
     where: { id: id }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: 'Category deleted successfully',
+          message: 'Inventory deleted successfully',
         });
       } else {
         res.send({
-          messsage: `Cannot delete category with id = ${id}. Maybe category is not found` 
+          messsage: `Cannot delete inventory with id = ${id}. Maybe inventory is not found` 
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: 'Could not delete category with id = ' + id 
+        message: 'Could not delete inventory with id = ' + id 
       });
     });
 };

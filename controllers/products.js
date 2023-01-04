@@ -22,7 +22,7 @@ exports.findAll = (req, res) => {
 //create and save
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.name) {
+  if (!req.body.name || !req.body.price || !req.body.expiration_date) {
     res.status(400).send({
       message: "Content can not be empty!"
     });

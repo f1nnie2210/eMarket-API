@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const Customer = sequelize.define('customers', {
+    const Customer = sequelize.define('customer', {
         name: {
           type: Sequelize.STRING,
           allowNull: false
@@ -20,7 +20,8 @@ module.exports = (sequelize, Sequelize) => {
           type: Sequelize.INTEGER,
           defaultValue: 0
         }
-      });
-      
+      }, {
+        tableName: 'customer',
+      });      
       return Customer;
 };

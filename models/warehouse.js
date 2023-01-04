@@ -8,6 +8,9 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false
         }
-    })
-    return Warehouse
+    }, {
+        tableName: 'warehouse',
+      });    
+
+      return Warehouse
 } 

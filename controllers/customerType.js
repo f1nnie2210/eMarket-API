@@ -22,7 +22,7 @@ exports.findAll = (req, res) => {
 //create and save
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.customer_type_name) {
+  if (!req.body.customer_type_name || !req.body.discount_percentage) {
     res.status(400).send({
       message: "Content can not be empty!"
     });

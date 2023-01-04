@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const CustomerType = sequelize.define('customer_types', {
+  const CustomerType = sequelize.define('customer_type', {
     customer_type_name: {
         type: Sequelize.STRING,
         allowNull: false
@@ -8,6 +8,8 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.DECIMAL(5,2),
         allowNull: false
       },
+    }, {
+      tableName: 'customer_type',
     });
 
   return CustomerType

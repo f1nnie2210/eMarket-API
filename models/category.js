@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const Category = sequelize.define('Categories', {
+    const Category = sequelize.define('category', {
         name: {
             type: Sequelize.STRING,
             allowNull: false
@@ -8,6 +8,8 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.TEXT,
             allowNull: false
         }
-    })
+    }, {
+        tableName: 'category',
+      });
     return Category
 }
