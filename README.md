@@ -46,10 +46,12 @@ If you need to update `npm`, you can make it using `npm`! Cool right? After runn
 ## Install
 
     $ git clone https://github.com/f1nnie2210/eMarket-API.git
-    $ npm install 
+    $ npm install    
+    
 Or
-    $ yarn install
 
+    $ yarn install
+    
 ## Configure app
 
 Open `config/db.js` then edit it with your MySQL DB. You will need:
@@ -58,8 +60,10 @@ Open `config/db.js` then edit it with your MySQL DB. You will need:
 
 ## Running the project
 
-    $ npm start 
+    $ npm start
+    
 Or
+
     $ yarn start
 
 ---
