@@ -57,3 +57,15 @@ Open `config/db.js` then edit it with your MySQL DB. You will need:
 ## Running the project
 
     $ npm start or yarn start
+    
+## About us
+
+Group 8
+
+| Name     | MSSV |
+| ---      | ---  |
+| Nguyễn Trần Hoàng Long | 1911548779 |
+| Phạm Ngô Anh Kiệt | 2100009415 |
+| Vũ Đức Huy | 2100002892 |
+| Phan Thanh Thiên | 1900009380 |
+| Nguyễn Văn Lĩnh | 2100002375 |
