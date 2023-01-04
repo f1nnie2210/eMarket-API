@@ -4,7 +4,12 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/f1nnie2210/eMarket-API"
   },
   "author": "Finnie",
   "license": "ISC",
@@ -12,6 +17,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mysql2": "^2.3.3",
+    "nodemon": "^2.0.20",
     "sequelize": "^5.21.3"
   }
 }

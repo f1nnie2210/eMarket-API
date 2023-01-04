@@ -1,79 +1,101 @@
-// const Customer = require('../models/customers');
+const db = require('../models');
+const Customer = db.customer;
+const Op = db.Sequelize.Op;
 
-// const getCustomers = async (req, res) => {
-//     try {
-//       const customers = await Customer.findAll();
-//       return res.status(200).json({
-//         customers: customers
-//       });
-//     } catch (error) {
-//       return res.status(500).json({
-//         message: 'Đã xảy ra lỗi trong quá trình lấy dữ liệu khách hàng:',
-//       });
-//     }
-//   };
-  
-//   const createCustomer = async (req, res) => {
-//     try {
-//       const { name, address, phone, email } = req.body;
-//       const newCustomer = await Customer.create({
-//         name: name,
-//         address: address,
-//         phone: phone,
-//         email: email
-//       });
-//       return res.status(201).json({
-//         message: 'Tạo khách hàng mới thành công.',
-//         customer: newCustomer
-//       });
-//     } catch (error) {
-//       return res.status(500).json({
-//         message: 'Đã xảy ra lỗi trong quá trình tạo khách hàng mới.'
-//       });
-//     }
-//   };
-  
-//   const updateCustomer = async (req, res) => {
-//     try {
-//       const { id } = req.params;
-//       const { name, address, phone, email } = req.body;
-//       await Customer.update({
-//         name: name,
-//         address: address,
-//         phone: phone,
-//         email: email
-//       }, {
-//         where: { id: id }
-//       });
-//       return res.status(200).json({
-//         message: 'Cập nhật khách hàng thành công.'
-//       });
-//     } catch (error) {
-//       return res.status(500).json({
-//         message: 'Đã xảy ra lỗi trong quá trình cập nhật khách hàng.'
-//       });
-//     }
-//   };
-  
-//   const deleteCustomer = async (req, res) => {
-//     try {
-//       const { id } = req.params;
-//       await Customer.destroy({
-//         where: { id: id }
-//       });
-//       return res.status(200).json({
-//         message: 'Xóa khách hàng thành công.'
-//       });
-//     } catch (error) {
-//         return res.status(500).json({
-//           message: 'Đã xảy ra lỗi trong quá trình xoá khách hàng.'
-//         });
-//     }
-//   };
+//getAll
+exports.findAll = (req, res) => {
+  const name = req.body.name;
+  var conditions = name ? {name: { [Op.like]: `%${name}%` } } : null;
 
-//   module.exports = {
-//     getCustomers,
-//     createCustomer,
-//     updateCustomer,
-//     deleteCustomer
-//     };
+  Customer.findAll({ where: conditions })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({ 
+        message:
+          err.message || 'Failed to find customer'
+      });
+    });
+};
+
+//create and save
+exports.create = (req, res) => {
+  // Validate request
+  if (!req.body.name) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+  }
+
+  // Create
+  const customer = {
+    name: req.body.name,
+    address: req.body.address,
+    phone: req.body.phone,
+    email: req.body.email,
+    loyalty_points: req.body.loyalty_points,
+  };
+
+  // Save in the database
+  Customer.create(customer)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the customer."
+      });
+    });
+};
+
+//update
+exports.update = (req, res) => {
+  const id = req.params.id;
+  
+  Customer.update(req.body, {
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: 'Customer update successfully',
+        });
+      } else {
+        res.send({
+          messsage: `Cannot update customer with id = ${id}. Maybe customer is not found` 
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: 'Could not update customer with id = ' + id 
+      });
+    });
+};
+
+//delete
+exports.delete = (req, res) => {
+  const id = req.params.id;
+  Customer.destroy({
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: 'Customer deleted successfully',
+        });
+      } else {
+        res.send({
+          messsage: `Cannot delete customer with id = ${id}. Maybe customer is not found` 
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: 'Could not delete customer with id = ' + id 
+      });
+    });
+};

@@ -25,7 +25,7 @@ db.sequelize.sync()
     console.log('Failed to sync db: '+ err.message);
   });
 
-// db.sequelize.sync({ force: true}).then(() => {
+// db.sequelize.sync({ force: true }).then(() => {
 //   console.log('Drop and re-sync db.');
 // });
 
@@ -33,24 +33,11 @@ app.get('/', (req, res) => {
   res.json({ message: 'Welcome to application'})
 });
 
-
-//routes
-// const customersTypeRoutes = require('./routes/customerType');
-// app.use('/customertype', customersTypeRoutes);
-
-// const customerRoutes = require('./routes/customers');
-// app.use('/customers', customerRoutes);
-
-// const categoryRoutes = require('./routes/category');
-// app.use('/category', categoryRoutes);
-
-// const warehouseRoutes = require('./routes/warehouse');
-// app.use('/warehouse', warehouseRoutes);
-
-// const productRoutes = require('./routes/product');
-// app.use('/product', productRoutes);
-
 require('./routes/customerType.js') (app)
+require('./routes/customers.js') (app)
+require('./routes/category.js') (app)
+require('./routes/products.js') (app)
+require('./routes/warehouse.js') (app)
 
 //connect
 const PORT = process.env.PORT || 3000;

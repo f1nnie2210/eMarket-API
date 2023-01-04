@@ -1,76 +1,98 @@
-// const Category = require('../models/category');
+const db = require('../models');
+const Category = db.category;
+const Op = db.Sequelize.Op;
 
-// //Xử lý logic cho các endpoint
-// const getCategory = async (req, res) => { //Lấy tất cả dữ liệu từ bảng
-//     try {
-//       const category = await Category.findAll();
-//       return res.status(200).json({
-//         category: category
-//       });
-//     } catch (error) {
-//       return res.status(500).json({
-//         message: 'Đã xảy ra lỗi trong quá trình lấy dữ liệu',
-//       });
-//     }
-//   };
-  
-//   const createCategory = async (req, res) => { //Tạo dữ liệu mới cho bảng
-//     try {
-//       const { name, description } = req.body;
-//       const newCategory = await Category.create({
-//         name: name,
-//         description: description,
-//       });
-//       return res.status(201).json({
-//         message: 'Tạo mới thành công.',
-//         category: newCategory
-//       });
-//     } catch (error) {
-//       return res.status(500).json({
-//         message: 'Đã xảy ra lỗi trong quá trình tạo mới.'
-//       });
-//     }
-//   };
-  
-//   const updateCategory = async (req, res) => { //Cập nhật dữ liệu có trong bảng
-//     try {
-//       const { id } = req.params;
-//       const { name, description } = req.body;
-//       await Category.update({
-//         name: name,
-//         description: description
-//       }, {
-//         where: { id: id }
-//       });
-//       return res.status(200).json({
-//         message: 'Cập nhật khách hàng thành công.'
-//       });
-//     } catch (error) {
-//       return res.status(500).json({
-//         message: 'Đã xảy ra lỗi trong quá trình cập nhật khách hàng.'
-//       });
-//     }
-//   };
-  
-//   const deleteCategory = async (req, res) => { //Xoá bảng
-//     try {
-//       const { id } = req.params;
-//       await Category.destroy({
-//         where: { id: id }
-//       });
-//       return res.status(200).json({
-//         message: 'Xóa khách hàng thành công.'
-//       });
-//     } catch (error) {
-//         return res.status(500).json({
-//           message: 'Đã xảy ra lỗi trong quá trình xoá khách hàng.'
-//         });
-//     }
-//   };
+//getAll
+exports.findAll = (req, res) => {
+  const name = req.body.name;
+  var conditions = name ? {name: { [Op.like]: `%${name}%` } } : null;
 
-//   module.exports = {
-//     getCategory,
-//     createCategory,
-//     updateCategory,
-//     deleteCategory,
-//     };
+  Category.findAll({ where: conditions })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({ 
+        message:
+          err.message || 'Failed to find category'
+      });
+    });
+};
+
+//create and save
+exports.create = (req, res) => {
+  // Validate request
+  if (!req.body.name) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+  }
+
+  // Create
+  const category = {
+    name: req.body.name,
+    description: req.body.description
+  };
+
+  // Save in the database
+  Category.create(category)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the category."
+      });
+    });
+};
+
+//update
+exports.update = (req, res) => {
+  const id = req.params.id;
+  
+  Category.update(req.body, {
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: 'Category update successfully',
+        });
+      } else {
+        res.send({
+          messsage: `Cannot update category with id = ${id}. Maybe category is not found` 
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: 'Could not update category with id = ' + id 
+      });
+    });
+};
+
+//delete
+exports.delete = (req, res) => {
+  const id = req.params.id;
+  Category.destroy({
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: 'Category deleted successfully',
+        });
+      } else {
+        res.send({
+          messsage: `Cannot delete category with id = ${id}. Maybe category is not found` 
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: 'Could not delete category with id = ' + id 
+      });
+    });
+};

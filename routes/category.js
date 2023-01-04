@@ -1,12 +1,12 @@
-// const express = require('express');
-// const CategoryController = require('../controllers/category');
+module.exports = app => {
+    const category = require('../controllers/category.js');
 
-// const router = express.Router();
+    var router = require('express').Router();
 
-// //Tạo endpoint cho bảng
-// router.get('/', CategoryController.getCategory);
-// router.post('/', CategoryController.createCategory);
-// router.put('/:id', CategoryController.updateCategory);
-// router.delete('/:id', CategoryController.deleteCategory);
+    router.get('/', category.findAll);
+    router.post('/', category.create);
+    router.put('/:id', category.update);
+    router.delete('/:id', category.delete);
 
-// module.exports = router;
+    app.use('/api/category', router);
+};

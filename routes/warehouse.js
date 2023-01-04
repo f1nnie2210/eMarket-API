@@ -1,12 +1,12 @@
-// const express = require('express');
-// const WarehouseController = require('../controllers/warehouse');
+module.exports = app => {
+    const warehouse = require('../controllers/warehouse.js');
 
-// const router = express.Router();
+    var router = require('express').Router();
 
-// //Tạo endpoint cho bảng
-// router.get('/', WarehouseController.getWarehouse);
-// router.post('/', WarehouseController.createWarehouse);
-// router.put('/:id', WarehouseController.updateWarehouse);
-// router.delete('/:id', WarehouseController.deleteWarehouse);
+    router.get('/', warehouse.findAll);
+    router.post('/', warehouse.create);
+    router.put('/:id', warehouse.update);
+    router.delete('/:id', warehouse.delete);
 
-// module.exports = router;
+    app.use('/api/warehouse', router);
+};

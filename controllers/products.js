@@ -1,5 +1,5 @@
 const db = require('../models');
-const Warehouse = db.warehouse;
+const Product = db.products;;
 const Op = db.Sequelize.Op;
 
 //getAll
@@ -7,14 +7,14 @@ exports.findAll = (req, res) => {
   const name = req.body.name;
   var conditions = name ? {name: { [Op.like]: `%${name}%` } } : null;
 
-  Warehouse.findAll({ where: conditions })
+  Product.findAll({ where: conditions })
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({ 
         message:
-          err.message || 'Failed to find warehouse'
+          err.message || 'Failed to find product'
       });
     });
 };
@@ -30,20 +30,21 @@ exports.create = (req, res) => {
   }
 
   // Create
-  const warehouse = {
+  const product = {
     name: req.body.name,
-    location: req.body.location
+    price: req.body.price,
+    expiration_date: req.body.expiration_date,
   };
 
   // Save in the database
-  Warehouse.create(warehouse)
+  Product.create(product)
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the warehouse."
+          err.message || "Some error occurred while creating the product."
       });
     });
 };
@@ -52,23 +53,23 @@ exports.create = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
   
-  Warehouse.update(req.body, {
+  Product.update(req.body, {
     where: { id: id }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: 'Warehouse update successfully',
+          message: 'Product update successfully',
         });
       } else {
         res.send({
-          messsage: `Cannot update warehouse with id = ${id}. Maybe warehouse is not found` 
+          messsage: `Cannot update product with id = ${id}. Maybe product is not found` 
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: 'Could not update warehouse with id = ' + id 
+        message: 'Could not update product with id = ' + id 
       });
     });
 };
@@ -76,23 +77,23 @@ exports.update = (req, res) => {
 //delete
 exports.delete = (req, res) => {
   const id = req.params.id;
-  Warehouse.destroy({
+  Product.destroy({
     where: { id: id }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: 'Warehouse deleted successfully',
+          message: 'Product deleted successfully',
         });
       } else {
         res.send({
-          messsage: `Cannot delete warehouse with id = ${id}. Maybe warehouse is not found` 
+          messsage: `Cannot delete product with id = ${id}. Maybe product is not found` 
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: 'Could not delete warehouse with id = ' + id 
+        message: 'Could not delete product with id = ' + id 
       });
     });
 };
